@@ -138,7 +138,9 @@
   .opt-line .i b{color:var(--paper);font-weight:400;font-family:var(--latin);font-size:16px}
 
   /* ---- flow ---- */
-  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;margin-top:48px}
+  .flow{display:grid;grid-template-columns:repeat(4,1fr);gap:26px;margin-top:48px;align-items:start}
+  .flow-photo{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border:1px solid var(--line);
+    border-radius:2px;margin-bottom:20px;box-shadow:0 12px 30px rgba(0,0,0,.3)}
   .flow-step .n{font-family:var(--latin);font-size:15px;letter-spacing:.3em;color:var(--bronze);
     padding-bottom:14px;border-bottom:1px solid var(--line);display:block}
   .flow-step h3{font-family:var(--serif);font-weight:600;font-size:17px;letter-spacing:.08em;margin:18px 0 8px}
@@ -369,9 +371,20 @@
       </div>
     </div>
 
-    <div class="opt-line">
-      <span class="h">オプション</span>
-      <span class="i">足ツボ ・ ハンド ・ ヘッド ・ 顔ツボ　各 <b>¥1,100</b>（15分）</span>
+    <div class="menu-cat">
+      <div class="menu-cat-top">
+        <div class="menu-cat-name"><span class="en">options</span>オプション<span class="tag">単品利用不可・各15分</span>
+          <img class="menu-cat-photo" src="images/menu-option.jpg" alt="オプション ― 足ツボ・ヘッド・顔ツボ・ハンド" loading="lazy"></div>
+        <div>
+          <p class="menu-cat-desc">メインメニューに追加できる部分ケア。気になるところをちょい足しで。</p>
+          <div class="price-list">
+            <div class="price-row"><span class="dur">足ツボ</span><span class="dots"></span><span class="yen">¥1,100</span></div>
+            <div class="price-row"><span class="dur">ハンド</span><span class="dots"></span><span class="yen">¥1,100</span></div>
+            <div class="price-row"><span class="dur">ヘッド</span><span class="dots"></span><span class="yen">¥1,100</span></div>
+            <div class="price-row"><span class="dur">顔ツボ</span><span class="dots"></span><span class="yen">¥1,100</span></div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
@@ -383,11 +396,13 @@
     <h2 class="sec-title">ご利用の流れ</h2>
     <div class="flow">
       <div class="flow-step">
+        <img class="flow-photo" src="images/flow-counseling.jpg" alt="カウンセリング ― フットバスをしながらお話を伺います" loading="lazy">
         <span class="n">01</span>
         <h3>カウンセリング</h3>
         <p>その日の体調やお疲れの場所、力加減のお好みを伺います。はじめての方も安心して。</p>
       </div>
       <div class="flow-step">
+        <img class="flow-photo" src="images/flow-footbath.jpg" alt="フットバス ― あたたかなお湯で足元から整える" loading="lazy">
         <span class="n">02</span>
         <h3>フットバス</h3>
         <p>足元をあたためながら、呼吸を整えて。ここから静かな時間がはじまります。</p>

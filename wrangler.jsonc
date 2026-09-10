@@ -1,0 +1,10 @@
+{
+  // 既存Worker（独自ドメイン eureka-salon.ynsysapp.com が紐づく）を更新する。
+  // name は既存Worker名と一致必須（変えると別Workerになりドメインが外れる）。
+  "name": "eureka-hp",
+  "compatibility_date": "2024-11-01",
+  // 配信するのは public/ 配下のみ（.git や設定ファイルは配信しない）
+  "assets": {
+    "directory": "./public"
+  }
+}

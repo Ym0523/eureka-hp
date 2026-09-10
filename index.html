@@ -101,16 +101,12 @@
   .concept-copy p{margin:20px 0 0}
   .concept-copy .big{font-family:var(--serif);font-weight:500;font-size:clamp(21px,3vw,27px);
     letter-spacing:.12em;line-height:1.85;color:var(--paper)}
-  .concept-figure{position:relative;aspect-ratio:4/5;border:1px solid var(--line);border-radius:2px;
-    background:
-      linear-gradient(160deg, rgba(195,159,97,.10), rgba(139,144,116,.05)),
-      repeating-linear-gradient(135deg, rgba(236,227,211,.03) 0 2px, transparent 2px 22px),
-      #1b1712;
-    display:flex;align-items:center;justify-content:center;overflow:hidden}
-  .concept-figure .glyph{font-family:var(--latin);font-style:italic;font-weight:300;
-    font-size:clamp(56px,12vw,120px);color:var(--bronze);opacity:.5;letter-spacing:.02em}
-  .concept-figure .ph{position:absolute;bottom:14px;left:0;right:0;text-align:center;
-    font-size:10.5px;letter-spacing:.28em;color:var(--paper-faint);text-transform:uppercase}
+  .concept-figure{position:relative;margin:0;aspect-ratio:4/5;border:1px solid var(--line);border-radius:2px;
+    overflow:hidden;background:#1b1712;box-shadow:inset 0 0 0 1px rgba(0,0,0,.15),0 18px 44px rgba(0,0,0,.35)}
+  .concept-figure img{width:100%;height:100%;object-fit:cover;object-position:center;display:block}
+  .concept-figure::after{content:"";position:absolute;inset:0;pointer-events:none;
+    background:linear-gradient(180deg, rgba(22,19,15,0) 62%, rgba(22,19,15,.28) 100%),
+      radial-gradient(120% 100% at 50% 40%, rgba(22,19,15,0) 60%, rgba(22,19,15,.14) 100%)}
 
   /* ---- menu ---- */
   .menu-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;margin-bottom:12px}
@@ -124,6 +120,8 @@
   .menu-cat-name .tag{display:inline-block;margin-top:9px;font-family:var(--sans);font-weight:400;
     font-size:10.5px;letter-spacing:.14em;color:var(--sage);border:1px solid rgba(139,144,116,.4);
     padding:3px 9px;border-radius:2px}
+  .menu-cat-photo{display:block;width:100%;aspect-ratio:4/3;object-fit:cover;border:1px solid var(--line);
+    border-radius:2px;margin-top:18px;box-shadow:0 12px 30px rgba(0,0,0,.3)}
   .menu-cat-desc{color:var(--paper-dim);font-size:14px;line-height:1.95;margin:2px 0 16px}
   .price-list{display:flex;flex-direction:column;gap:2px}
   .price-row{display:flex;align-items:baseline;gap:14px;padding:9px 0;border-bottom:1px dotted var(--line-soft)}
@@ -269,10 +267,9 @@
       <p class="lead">ゆったりとしたリズムの圧迫・指圧・ストレッチで、体のこわばりをほどいていきます。呼吸を深く導きながら進めるので、お身体が硬い方でも大丈夫。アロマオイルのメニューは、肌に直接触れて巡りを整えます。</p>
       <p class="lead">扉を閉めれば、そこはあなただけの完全個室。フットバスとカウンセリングから、静かな時間がはじまります。</p>
     </div>
-    <div class="concept-figure" role="img" aria-label="Eureka のシンボルイメージ（写真差し替え予定）">
-      <span class="glyph">respire</span>
-      <span class="ph">— photo coming soon —</span>
-    </div>
+    <figure class="concept-figure">
+      <img src="images/concept.jpg" alt="完全個室でのタイ古式ベースの施術。呼吸に合わせて腕をゆっくり引き上げるストレッチ。">
+    </figure>
   </div>
 </section>
 
@@ -289,7 +286,8 @@
 
     <div class="menu-cat">
       <div class="menu-cat-top">
-        <div class="menu-cat-name"><span class="en">respire body care</span>ボディケア<span class="tag">呼吸を導く</span></div>
+        <div class="menu-cat-name"><span class="en">respire body care</span>ボディケア<span class="tag">呼吸を導く</span>
+          <img class="menu-cat-photo" src="images/menu-respire.jpg" alt="respire body care ― 背中をゆっくりと押し流す施術" loading="lazy"></div>
         <div>
           <p class="menu-cat-desc">タイ古式ベースの、ゆったりとした圧迫・指圧・ストレッチ。呼吸を導きながら、全身のこわばりを解きほぐします。</p>
           <div class="price-list">

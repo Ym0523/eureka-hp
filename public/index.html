@@ -207,6 +207,19 @@
   .ig-card .t{font-family:var(--serif);font-size:16px;letter-spacing:.08em;color:var(--paper)}
   .ig-card .s{font-family:var(--latin);font-size:12px;letter-spacing:.12em;color:var(--paper-faint);text-transform:uppercase}
 
+  /* ---- reviews ---- */
+  .reviews{text-align:center}
+  .rev-score{display:inline-flex;align-items:baseline;gap:11px;margin-top:16px;color:var(--paper-dim);font-size:13px;letter-spacing:.08em}
+  .rev-score b{font-family:var(--latin);font-size:36px;color:var(--bronze);letter-spacing:.02em;line-height:1}
+  .rev-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(285px,1fr));gap:18px;margin:42px auto 0;max-width:980px;text-align:left}
+  .rev-card{border:1px solid var(--line);border-radius:3px;padding:24px 22px;background:var(--ink);display:flex;flex-direction:column;gap:13px}
+  .rev-stars{color:var(--bronze);font-size:13px;letter-spacing:.18em}
+  .rev-text{color:var(--paper-dim);font-size:14px;line-height:1.98;flex:1}
+  .rev-meta{font-size:12px;letter-spacing:.05em;color:var(--paper-faint);border-top:1px solid var(--line-soft);padding-top:12px;line-height:1.7}
+  .rev-meta b{color:var(--paper);font-weight:500}
+  .rev-cta{margin-top:38px}
+  .rev-src{margin-top:16px;font-size:11px;letter-spacing:.1em;color:var(--paper-faint)}
+
   /* ---- reserve CTA ---- */
   .reserve{text-align:center;position:relative;overflow:hidden;
     background:radial-gradient(120% 130% at 50% 0%, #241f17 0%, #16130f 62%)}
@@ -510,6 +523,51 @@
         <svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.7" r="1" fill="#fff" stroke="none"/></svg>
         Instagramで道案内を見る
       </a>
+    </div>
+  </div>
+</section>
+
+<!-- REVIEWS -->
+<section class="band" id="reviews">
+  <div class="wrap reviews">
+    <span class="eyebrow">Voice</span>
+    <h2 class="sec-title">お客様の声</h2>
+    <div class="rev-score"><b>4.99</b><span>／ 5.0 ・ HOT PEPPER Beauty 口コミ 96件</span></div>
+    <div class="rev-grid">
+      <div class="rev-card">
+        <div class="rev-stars">★★★★★</div>
+        <p class="rev-text">一回一回、真心を感じる施術。手から、何とかしてこの人のコリや疲れをとってあげたいという気持ちがひしひしと伝わってきます。頭痛がするほど凝る首と肩が、最高でした。</p>
+        <div class="rev-meta"><b>れんさん</b>（女性・30代）</div>
+      </div>
+      <div class="rev-card">
+        <div class="rev-stars">★★★★★</div>
+        <p class="rev-text">相変わらず「神の手」は存在しています。滑らかで力強い、場所によって柔軟な施術。ゆったりとした雰囲気に、明るくほがらかな会話。施術後の夜は久しぶりに寝入りが早く…。</p>
+        <div class="rev-meta"><b>つっくんさん</b>（男性・60代）・お好きな組み合わせ 120分</div>
+      </div>
+      <div class="rev-card">
+        <div class="rev-stars">★★★★★</div>
+        <p class="rev-text">スタッフの方のお人柄・お心遣いがとても素敵で、室内も清潔感があり綺麗です。施術もカウンセリングも丁寧で、本当に心地良い2時間を過ごすことができました。自分へのご褒美に時々伺います。</p>
+        <div class="rev-meta"><b>ペロちゃんさん</b>（女性・60代）・Oil massage 120分</div>
+      </div>
+      <div class="rev-card">
+        <div class="rev-stars">★★★★★</div>
+        <p class="rev-text">左の腰が痛かったのですが、すっかり良くなりました。あっというまの2時間でした。お身体全体のバランスを見ながら施術を組み立ててくださいます。</p>
+        <div class="rev-meta"><b>りーさん</b>（男性・40代）・respire body care 120分</div>
+      </div>
+      <div class="rev-card">
+        <div class="rev-stars">★★★★★</div>
+        <p class="rev-text">施術中はおしゃべりすることなく、ぐっすり休めるのがいいですね。気温差や冷房のだるさ、夏の頭痛には顔ツボのオプションがおすすめです。</p>
+        <div class="rev-meta"><b>パパさんさん</b>（男性・40代）・respire body care 150分</div>
+      </div>
+      <div class="rev-card">
+        <div class="rev-stars">★★★★★</div>
+        <p class="rev-text">「痛くないけどしっかり入る」絶妙の施術に、いつもお世話になっています。このお店でしか受けられない技術がいくつもあり、どれもよく効きます。</p>
+        <div class="rev-meta"><b>ぱんさん</b>（女性・40代）・respire body care 90分</div>
+      </div>
+    </div>
+    <div class="rev-src">※ HOT PEPPER Beauty に寄せられた口コミより抜粋（サロン平均 ★4.99）</div>
+    <div class="rev-cta">
+      <a class="btn btn-ghost" href="https://beauty.hotpepper.jp/kr/slnH000755886/review/" target="_blank" rel="noopener">口コミを書く・すべて見る</a>
     </div>
   </div>
 </section>

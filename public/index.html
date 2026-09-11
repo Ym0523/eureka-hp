@@ -217,8 +217,25 @@
   .rev-text{color:var(--paper-dim);font-size:14px;line-height:1.98;flex:1}
   .rev-meta{font-size:12px;letter-spacing:.05em;color:var(--paper-faint);border-top:1px solid var(--line-soft);padding-top:12px;line-height:1.7}
   .rev-meta b{color:var(--paper);font-weight:500}
-  .rev-cta{margin-top:38px}
+  .rev-cta{margin-top:34px}
+  .rev-more-wrap{margin-top:30px}
   .rev-src{margin-top:16px;font-size:11px;letter-spacing:.1em;color:var(--paper-faint)}
+  .rev-form{max-width:560px;margin:30px auto 0;text-align:left;border:1px solid var(--line);border-radius:3px;padding:26px 24px;background:var(--ink)}
+  .rev-form-row{margin-bottom:16px}
+  .rev-lab{display:block;font-size:12px;letter-spacing:.1em;color:var(--bronze);margin-bottom:7px}
+  .rev-form input,.rev-form textarea{width:100%;background:#1b1712;border:1px solid var(--line);border-radius:2px;color:var(--paper);
+    font-family:inherit;font-size:15px;padding:11px 12px;box-sizing:border-box}
+  .rev-form input:focus,.rev-form textarea:focus{outline:none;border-color:var(--bronze)}
+  .rev-form textarea{resize:vertical;line-height:1.7}
+  .rf-stars{display:flex;gap:6px}
+  .rf-stars button{background:none;border:0;cursor:pointer;font-size:30px;line-height:1;color:rgba(236,227,211,.22);padding:0 2px;transition:color .15s}
+  .rf-stars button.on{color:var(--bronze)}
+  .rev-form-actions{display:flex;gap:12px;align-items:center;margin-top:8px;flex-wrap:wrap}
+  .rev-msg{margin-top:14px;font-size:14px;line-height:1.75;padding:12px 14px;border-radius:2px}
+  .rev-msg.ok{background:rgba(139,144,116,.16);color:var(--paper)}
+  .rev-msg.err{background:rgba(176,88,68,.18);color:#eac9bf}
+  .rev-msg a{color:var(--bronze)}
+  .rev-note{margin-top:14px;font-size:12px;line-height:1.75;color:var(--paper-faint)}
 
   /* ---- reserve CTA ---- */
   .reserve{text-align:center;position:relative;overflow:hidden;
@@ -532,7 +549,7 @@
   <div class="wrap reviews">
     <span class="eyebrow">Voice</span>
     <h2 class="sec-title">お客様の声</h2>
-    <div class="rev-score"><b>4.99</b><span>／ 5.0 ・ HOT PEPPER Beauty 口コミ 96件</span></div>
+    <div class="rev-score"><b id="rev-avg">4.99</b><span>／ 5.0 ・ 口コミ <span id="rev-count">96</span>件</span></div>
     <div class="rev-grid">
       <div class="rev-card">
         <div class="rev-stars">★★★★★</div>
@@ -565,10 +582,34 @@
         <div class="rev-meta"><b>ぱんさん</b>（女性・40代）・respire body care 90分</div>
       </div>
     </div>
-    <div class="rev-src">※ HOT PEPPER Beauty に寄せられた口コミより抜粋（サロン平均 ★4.99）</div>
+    <div class="rev-more-wrap"><button id="rev-more" class="btn btn-ghost" hidden onclick="revLoadMore()">もっと見る</button></div>
+    <div class="rev-src">※ HOT PEPPER Beauty に寄せられた口コミを含みます。</div>
     <div class="rev-cta">
-      <a class="btn btn-ghost" href="https://beauty.hotpepper.jp/kr/slnH000755886/review/" target="_blank" rel="noopener">口コミを書く・すべて見る</a>
+      <button class="btn-route-ig" style="border:0;cursor:pointer" onclick="revToggleForm()">口コミを書く</button>
     </div>
+
+    <form id="rev-form" class="rev-form" hidden onsubmit="return revSubmit(event)">
+      <div class="rev-form-row">
+        <label class="rev-lab">お名前・ニックネーム</label>
+        <input id="rf-name" maxlength="30" required placeholder="例）みやざき太郎">
+      </div>
+      <div class="rev-form-row">
+        <label class="rev-lab">評価</label>
+        <div id="rf-stars" class="rf-stars" role="radiogroup" aria-label="評価">
+          <button type="button" data-v="1">★</button><button type="button" data-v="2">★</button><button type="button" data-v="3">★</button><button type="button" data-v="4">★</button><button type="button" data-v="5">★</button>
+        </div>
+      </div>
+      <div class="rev-form-row">
+        <label class="rev-lab">口コミ</label>
+        <textarea id="rf-text" maxlength="1000" required rows="4" placeholder="施術のご感想をお聞かせください（5文字以上）"></textarea>
+      </div>
+      <div class="rev-form-actions">
+        <button type="submit" id="rf-submit" class="btn-route-ig" style="border:0;cursor:pointer">投稿する</button>
+        <button type="button" class="btn btn-ghost" onclick="revToggleForm()">閉じる</button>
+      </div>
+      <div id="rf-msg" class="rev-msg" hidden></div>
+      <div class="rev-note">投稿は店舗の確認後に掲載されます。より確実な特典受け取りは、公式LINEアプリ内の予約ページからの投稿がおすすめです。</div>
+    </form>
   </div>
 </section>
 
@@ -622,6 +663,62 @@
   var onScroll = function(){ nav.classList.toggle('scrolled', window.scrollY > 40); };
   onScroll();
   window.addEventListener('scroll', onScroll, {passive:true});
+
+  // ---- 口コミ（予約アプリのAPIから取得・投稿）----
+  var REV_API = 'https://eureka.ynsysapp.com';
+  var revOffset = 0, revLimit = 9, revRating = 0, revBusy = false;
+  function revEsc(s){ return String(s==null?'':s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+  function revAttr(a){ if(!a) return ''; var p=a.split('/').slice(0,2).join('・'); return p?'（'+revEsc(p)+'）':''; }
+  function revCardHtml(x){
+    var meta = '<b>'+revEsc(x.name)+'さん</b>'+revAttr(x.attr)+(x.menu?' ・ '+revEsc(x.menu):'');
+    return '<div class="rev-card"><div class="rev-stars">'+('★'.repeat(x.rating)+'☆'.repeat(5-x.rating))
+      +'</div><p class="rev-text">'+revEsc(x.text)+'</p><div class="rev-meta">'+meta+'</div></div>';
+  }
+  async function revLoad(reset){
+    if(revBusy) return; revBusy = true;
+    try{
+      var res = await fetch(REV_API+'/api/reviews?limit='+revLimit+'&offset='+revOffset);
+      var j = await res.json();
+      if(j && j.reviews){
+        var grid = document.getElementById('rev-grid');
+        if(reset) grid.innerHTML = '';
+        j.reviews.forEach(function(x){ grid.insertAdjacentHTML('beforeend', revCardHtml(x)); });
+        revOffset += j.reviews.length;
+        if(typeof j.avg==='number') document.getElementById('rev-avg').textContent = j.avg.toFixed(2);
+        if(typeof j.total==='number') document.getElementById('rev-count').textContent = j.total;
+        document.getElementById('rev-more').hidden = revOffset >= (j.total||0);
+      }
+    }catch(e){ /* API未達なら静的の抜粋表示のまま */ }
+    revBusy = false;
+  }
+  function revLoadMore(){ revLoad(false); }
+  function revToggleForm(){ var f=document.getElementById('rev-form'); f.hidden=!f.hidden; if(!f.hidden) f.scrollIntoView({behavior:'smooth',block:'center'}); }
+  document.getElementById('rf-stars').addEventListener('click', function(e){
+    var b = e.target.closest('button[data-v]'); if(!b) return;
+    revRating = +b.dataset.v;
+    Array.prototype.forEach.call(this.children, function(x){ x.classList.toggle('on', (+x.dataset.v) <= revRating); });
+  });
+  async function revSubmit(ev){
+    ev.preventDefault();
+    var name = document.getElementById('rf-name').value.trim();
+    var text = document.getElementById('rf-text').value.trim();
+    var msg = document.getElementById('rf-msg');
+    function show(cls, html){ msg.hidden=false; msg.className='rev-msg '+cls; msg.innerHTML=html; }
+    if(!name || text.length < 5 || !(revRating >= 1)){ show('err','お名前・評価・5文字以上の口コミをご入力ください。'); return false; }
+    var btn = document.getElementById('rf-submit'); btn.disabled = true; btn.textContent = '送信中…';
+    try{
+      var res = await fetch(REV_API+'/api/review', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ name:name, rating:revRating, text:text }) });
+      var j = await res.json();
+      if(j && j.ok){
+        show('ok', '口コミありがとうございます！店舗の確認後に掲載されます。'+(j.couponUrl ? ' <a href="'+revEsc(j.couponUrl)+'" target="_blank" rel="noopener">クーポンを受け取る</a>' : ''));
+        document.getElementById('rf-name').value=''; document.getElementById('rf-text').value=''; revRating=0;
+        Array.prototype.forEach.call(document.getElementById('rf-stars').children, function(x){ x.classList.remove('on'); });
+      } else { show('err','送信できませんでした。入力内容をご確認ください。'); }
+    }catch(e){ show('err','通信エラーが発生しました。時間をおいてお試しください。'); }
+    btn.disabled = false; btn.textContent = '投稿する';
+    return false;
+  }
+  revLoad(true);
 </script>
 </body>
 </html>

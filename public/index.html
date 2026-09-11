@@ -584,32 +584,6 @@
     </div>
     <div class="rev-more-wrap"><button id="rev-more" class="btn btn-ghost" hidden onclick="revLoadMore()">もっと見る</button></div>
     <div class="rev-src">※ HOT PEPPER Beauty に寄せられた口コミを含みます。</div>
-    <div class="rev-cta">
-      <button class="btn-route-ig" style="border:0;cursor:pointer" onclick="revToggleForm()">口コミを書く</button>
-    </div>
-
-    <form id="rev-form" class="rev-form" hidden onsubmit="return revSubmit(event)">
-      <div class="rev-form-row">
-        <label class="rev-lab">お名前・ニックネーム</label>
-        <input id="rf-name" maxlength="30" required placeholder="例）みやざき太郎">
-      </div>
-      <div class="rev-form-row">
-        <label class="rev-lab">評価</label>
-        <div id="rf-stars" class="rf-stars" role="radiogroup" aria-label="評価">
-          <button type="button" data-v="1">★</button><button type="button" data-v="2">★</button><button type="button" data-v="3">★</button><button type="button" data-v="4">★</button><button type="button" data-v="5">★</button>
-        </div>
-      </div>
-      <div class="rev-form-row">
-        <label class="rev-lab">口コミ</label>
-        <textarea id="rf-text" maxlength="1000" required rows="4" placeholder="施術のご感想をお聞かせください（5文字以上）"></textarea>
-      </div>
-      <div class="rev-form-actions">
-        <button type="submit" id="rf-submit" class="btn-route-ig" style="border:0;cursor:pointer">投稿する</button>
-        <button type="button" class="btn btn-ghost" onclick="revToggleForm()">閉じる</button>
-      </div>
-      <div id="rf-msg" class="rev-msg" hidden></div>
-      <div class="rev-note">投稿は店舗の確認後に掲載されます。より確実な特典受け取りは、公式LINEアプリ内の予約ページからの投稿がおすすめです。</div>
-    </form>
   </div>
 </section>
 
@@ -666,7 +640,7 @@
 
   // ---- 口コミ（予約アプリのAPIから取得・投稿）----
   var REV_API = 'https://eureka.ynsysapp.com';
-  var revOffset = 0, revLimit = 9, revRating = 0, revBusy = false;
+  var revOffset = 0, revLimit = 9, revBusy = false;
   function revEsc(s){ return String(s==null?'':s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
   function revAttr(a){ if(!a) return ''; var p=a.split('/').slice(0,2).join('・'); return p?'（'+revEsc(p)+'）':''; }
   function revCardHtml(x){
@@ -692,32 +666,6 @@
     revBusy = false;
   }
   function revLoadMore(){ revLoad(false); }
-  function revToggleForm(){ var f=document.getElementById('rev-form'); f.hidden=!f.hidden; if(!f.hidden) f.scrollIntoView({behavior:'smooth',block:'center'}); }
-  document.getElementById('rf-stars').addEventListener('click', function(e){
-    var b = e.target.closest('button[data-v]'); if(!b) return;
-    revRating = +b.dataset.v;
-    Array.prototype.forEach.call(this.children, function(x){ x.classList.toggle('on', (+x.dataset.v) <= revRating); });
-  });
-  async function revSubmit(ev){
-    ev.preventDefault();
-    var name = document.getElementById('rf-name').value.trim();
-    var text = document.getElementById('rf-text').value.trim();
-    var msg = document.getElementById('rf-msg');
-    function show(cls, html){ msg.hidden=false; msg.className='rev-msg '+cls; msg.innerHTML=html; }
-    if(!name || text.length < 5 || !(revRating >= 1)){ show('err','お名前・評価・5文字以上の口コミをご入力ください。'); return false; }
-    var btn = document.getElementById('rf-submit'); btn.disabled = true; btn.textContent = '送信中…';
-    try{
-      var res = await fetch(REV_API+'/api/review', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({ name:name, rating:revRating, text:text }) });
-      var j = await res.json();
-      if(j && j.ok){
-        show('ok', '口コミありがとうございます！店舗の確認後に掲載されます。'+(j.couponUrl ? ' <a href="'+revEsc(j.couponUrl)+'" target="_blank" rel="noopener">クーポンを受け取る</a>' : ''));
-        document.getElementById('rf-name').value=''; document.getElementById('rf-text').value=''; revRating=0;
-        Array.prototype.forEach.call(document.getElementById('rf-stars').children, function(x){ x.classList.remove('on'); });
-      } else { show('err','送信できませんでした。入力内容をご確認ください。'); }
-    }catch(e){ show('err','通信エラーが発生しました。時間をおいてお試しください。'); }
-    btn.disabled = false; btn.textContent = '投稿する';
-    return false;
-  }
   revLoad(true);
 </script>
 </body>
